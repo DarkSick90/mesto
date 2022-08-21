@@ -12,4 +12,4 @@
 6. JavaScript
 
 
-* [Ссылка на gh-pages](https://darksick90.github.io/Mesto/)
+* [Ссылка на gh-pages](https://darksick90.github.io/mesto/)
