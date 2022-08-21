@@ -1,0 +1,9 @@
+.elements__info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    height: 79px;
+    border-radius: 0 0 10px 10px;
+    margin-top: -4px;
+}
