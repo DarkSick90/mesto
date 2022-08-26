@@ -3,8 +3,8 @@ let profileEditButton = document.querySelector('.profile__edit-button');
 let popUp = document.querySelector('.popup');
 let popupButtonClose = document.querySelector('.popup__btn-close');
 let formElement = document.querySelector('.popup__form');
-let nameInput = formElement.querySelector('.input_info_name');
-let jobInput = formElement.querySelector('.input_info_job');
+let nameInput = formElement.querySelector('.popup__input_info_name');
+let jobInput = formElement.querySelector('.popup__input_info_job');
 let profileName = document.querySelector('.profile__name');
 let profilejob = document.querySelector('.profile__name-info');
 
