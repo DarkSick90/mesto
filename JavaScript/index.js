@@ -1,51 +1,40 @@
-//открытие popup
+//переменные
 let profileEditButton = document.querySelector('.profile__edit-button');
 let popUp = document.querySelector('.popup');
+let popupButtonClose = document.querySelector('.popup__btn-close');
+let formElement = document.querySelector('.popup__form');
+let nameInput = formElement.querySelector('.input_info_name');
+let jobInput = formElement.querySelector('.input_info_job');
+let profileName = document.querySelector('.profile__name');
+let profilejob = document.querySelector('.profile__name-info');
 
+//открытие popup
 function popUpOpen() {
-    popUp.classList.add('popup_opened')
+    popUp.classList.add('popup_opened');
+    nameInput.value = profileName.textContent;
+    jobInput.value = profilejob.textContent;
 }
 
-profileEditButton.addEventListener('click', popUpOpen);
-//---
 
 //закрытие popUp
-let popupButtonClose = document.querySelector('.popup__btn-close');
-
 function popUpClose() {
-    popUp.classList.remove('popup_opened')
+    popUp.classList.remove('popup_opened');
 }
-
-popupButtonClose.addEventListener('click', popUpClose);
-//---
-
-// Находим форму в DOM
-let formElement = document.querySelector('.popup__form');
-// Находим поля формы в DOM
-let nameInput = formElement.querySelector('.popup__name');
-let jobInput = formElement.querySelector('.popup__info');
 
 // Обработчик «отправки» формы, хотя пока
 // она никуда отправляться не будет
 function formSubmitHandler (evt) {
     evt.preventDefault(); 
-    // Получите значение полей jobInput и nameInput из свойства value
     let nameInputValue = nameInput.value;
     let jobInputValue = jobInput.value;
-    // Выберите элементы, куда должны быть вставлены значения полей
-    let profileName = document.querySelector('.profile__name');
-    let profilejob = document.querySelector('.profile__name-info');
-    let nameInputSave = nameInput.getAttribute('value');
-    let jobInputSave = nameInput.getAttribute('value');
-    // Вставьте новые значения с помощью textContent
-    nameInputSave.textContent = nameInputValue;
-    jobInputSave.textContent = jobInputValue;
     profileName.textContent = nameInputValue;
     profilejob.textContent = jobInputValue;
-    console.log(jobInputValue);
     popUpClose()
 }
 
+//обработчики
+profileEditButton.addEventListener('click', popUpOpen);
+popupButtonClose.addEventListener('click', popUpClose);
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
 formElement.addEventListener('submit', formSubmitHandler);

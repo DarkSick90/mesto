@@ -6,6 +6,12 @@
     width: 150px;
     height: 50px;
     border: 2px solid #fff;
+    transition: 0.4s;
+    border-radius: 2px;
+}
+
+.profile__add-button:hover {
+    opacity: 0.6;
 }
 
 @media screen and (max-width: 910px) {
