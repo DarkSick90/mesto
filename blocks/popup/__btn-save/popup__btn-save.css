@@ -7,6 +7,7 @@
     color: #fff;
     cursor: pointer;
     padding: 0;
+    border: none;
     border-radius: 2px;
     transition: 0.4s;
 }
@@ -18,5 +19,7 @@
 @media screen and (max-width: 600px) {
     .popup__btn-save {
         max-width: 238px;
+        height: 46px;
+        margin: 0 auto 25px;
     }
 }
