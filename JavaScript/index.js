@@ -1,8 +1,8 @@
 //переменные
 const profileEditButton = document.querySelector('.profile__edit-button');
 const imageEditButton = document.querySelector('.profile__add-button');
-const popUpProfile = document.querySelector('.popup__profile');
-const popUpImage = document.querySelector('.popup__image');
+const popUpProfile = document.querySelector('.popup_window_profile');
+const popUpImage = document.querySelector('.popup_window_image');
 const popupProfileButtonClose = document.querySelector('.popup__profile-btn-close');
 const poUpImageButtonClose = document.querySelector('.popup__image-btn-close');
 const popUpBigImageBtnClose = document.querySelector('.popup__big-image-btn-close')
@@ -16,7 +16,7 @@ let popupInputImageName = formElementImage.querySelector('.popup__input_image_na
 let popupInputImageLink = formElementImage.querySelector('.popup__input_image_link')
 let profileName = document.querySelector('.profile__name');
 let profilejob = document.querySelector('.profile__name-info');
-let popUpBigImage = document.querySelector('.popup__big-image');
+let popUpBigImage = document.querySelector('.popup_window_big-image');
 let popIpBigImageImage = document.querySelector('.popup__big-image-image');
 let popUpBigImageDescription = document.querySelector('.popup__description');
 
