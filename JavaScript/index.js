@@ -48,30 +48,31 @@ const initialCards = [
     }
   ];
 
-  function createCard(item) {
-    // тут создаете карточку и возвращаете ее
-  return cardElement
+function createCard(item) {
+  const cardsElement = imageCard.querySelector('.elements__element').cloneNode(true);
+  cardsElement.querySelector('.elements__like').addEventListener('click', function(evt) {
+    evt.target.classList.toggle('elements__like_active');
+  });
+  cardsElement.querySelector('.elements__delete').addEventListener('click', function(evt) {
+    evt.target.closest('.elements__element').remove();
+  });
+  cardsElement.querySelector('.elements__image').addEventListener('click', function(evt) {
+    popUpBigImage.classList.add('popup_opened');
+    popIpBigImageImage.src = item.link;
+    popUpBigImageDescription.alt = item.name;
+    popUpBigImageDescription.textContent = item.name;
+  });
+  cardsElement.querySelector('.elements__image').src = item.link;
+  cardsElement.querySelector('.elements__image').alt = item.name;
+  cardsElement.querySelector('.elements__text').textContent = item.name;
+  return cardsElement;
 }
 
-  initialCards.forEach(function (item) {
-    const cardsElement = imageCard.querySelector('.elements__element').cloneNode(true);
-    cardsElement.querySelector('.elements__like').addEventListener('click', function(evt) {
-      evt.target.classList.toggle('elements__like_active');
-    });
-    cardsElement.querySelector('.elements__delete').addEventListener('click', function(evt) {
-      evt.target.closest('.elements__element').remove();
-    });
-    cardsElement.querySelector('.elements__image').addEventListener('click', function(evt) {
-      popUpBigImage.classList.add('popup_opened');
-      popIpBigImageImage.src = item.link;
-      popUpBigImageDescription.alt = item.name;
-      popUpBigImageDescription.textContent = item.name;
-    });
-    cardsElement.querySelector('.elements__image').src = item.link;
-    cardsElement.querySelector('.elements__image').alt = item.name;
-    cardsElement.querySelector('.elements__text').textContent = item.name;
-    cardsList.append(cardsElement);
-  });
+initialCards.forEach((item) => {
+  const cardsElement = createCard(item);
+  cardsList.prepend(cardsElement);
+});
+
 
 
 //открытие popup
@@ -116,32 +117,19 @@ function handleProfileFormSubmit (evt) {
     closePopup(popUpProfile)
 }
 
-function HandlerImageFormSubmit (evt) {
+function handlerImageFormSubmit (evt) {
   evt.preventDefault(); 
-  const popupInputImageLinkValue = popupInputImageLink.value;
-  const popupInputImageNameValue = popupInputImageName.value;
-  const cardsElement = imageCard.querySelector('.elements__element').cloneNode(true);
-  cardsElement.querySelector('.elements__like').addEventListener('click', function(evt) {
-    evt.target.classList.toggle('elements__like_active');
-  });
-  cardsElement.querySelector('.elements__delete').addEventListener('click', function(evt) {
-    evt.target.closest('.elements__element').remove();
-  });
-  cardsElement.querySelector('.elements__image').addEventListener('click', function(evt) {
-    popUpBigImage.classList.add('popup_opened');
-    popIpBigImageImage.src = popupInputImageLinkValue;
-    popUpBigImageDescription.alt = popupInputImageNameValue;
-    popUpBigImageDescription.textContent = popupInputImageNameValue;
-  });
-  cardsElement.querySelector('.elements__image').src = popupInputImageLinkValue;
-  cardsElement.querySelector('.elements__image').alt = popupInputImageNameValue;
-  cardsElement.querySelector('.elements__text').textContent = popupInputImageNameValue;
+  const newCard = {
+    name: popupInputImageName.value,
+    link: popupInputImageLink.value
+  };
+  const cardsElement = createCard(newCard);
   cardsList.prepend(cardsElement);
-  closePopup(popUpImage)
+  closePopup(popUpImage);
 }
 
 //обработчики
 profileEditButton.addEventListener('click', OpenPopUpProfile);
 imageEditButton.addEventListener('click', OpenPopUpImage);
 formElement.addEventListener('submit', handleProfileFormSubmit);
-formElementImage.addEventListener('submit', HandlerImageFormSubmit);
+formElementImage.addEventListener('submit', handlerImageFormSubmit);
