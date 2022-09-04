@@ -3,6 +3,7 @@
     width: 100%;
     margin: 0 auto;
     padding: 67px 0 60px;
+    flex: 0 0 auto;
 }
 
 @media screen and (max-width: 910px) {

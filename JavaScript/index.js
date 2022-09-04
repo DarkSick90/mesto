@@ -3,22 +3,23 @@ const profileEditButton = document.querySelector('.profile__edit-button');
 const imageEditButton = document.querySelector('.profile__add-button');
 const popUpProfile = document.querySelector('.popup_window_profile');
 const popUpImage = document.querySelector('.popup_window_image');
+const closeButtons = document.querySelectorAll('.popup__btn-close');
 const popupProfileButtonClose = document.querySelector('.popup__profile-btn-close');
 const poUpImageButtonClose = document.querySelector('.popup__image-btn-close');
 const popUpBigImageBtnClose = document.querySelector('.popup__big-image-btn-close')
 const imageCard = document.querySelector('#element').content;
-let cardsList = document.querySelector('.elements__list');
-let formElement = document.querySelector('.popup__form-info');
-let formElementImage = document.querySelector('.popup__form-image');
-let nameInput = formElement.querySelector('.popup__input_info_name');
-let jobInput = formElement.querySelector('.popup__input_info_job');
-let popupInputImageName = formElementImage.querySelector('.popup__input_image_name')
-let popupInputImageLink = formElementImage.querySelector('.popup__input_image_link')
-let profileName = document.querySelector('.profile__name');
-let profilejob = document.querySelector('.profile__name-info');
-let popUpBigImage = document.querySelector('.popup_window_big-image');
-let popIpBigImageImage = document.querySelector('.popup__big-image-image');
-let popUpBigImageDescription = document.querySelector('.popup__description');
+const cardsList = document.querySelector('.elements__list');
+const formElement = document.querySelector('.popup__form-info');
+const formElementImage = document.querySelector('.popup__form-image');
+const nameInput = formElement.querySelector('.popup__input_info_name');
+const jobInput = formElement.querySelector('.popup__input_info_job');
+const popupInputImageName = formElementImage.querySelector('.popup__input_image_name')
+const popupInputImageLink = formElementImage.querySelector('.popup__input_image_link')
+const profileName = document.querySelector('.profile__name');
+const profilejob = document.querySelector('.profile__name-info');
+const popUpBigImage = document.querySelector('.popup_window_big-image');
+const popIpBigImageImage = document.querySelector('.popup__big-image-image');
+const popUpBigImageDescription = document.querySelector('.popup__description');
 
 const initialCards = [
     {
@@ -47,8 +48,13 @@ const initialCards = [
     }
   ];
 
+  function createCard(item) {
+    // тут создаете карточку и возвращаете ее
+  return cardElement
+}
+
   initialCards.forEach(function (item) {
-    let cardsElement = imageCard.querySelector('.elements__element').cloneNode(true);
+    const cardsElement = imageCard.querySelector('.elements__element').cloneNode(true);
     cardsElement.querySelector('.elements__like').addEventListener('click', function(evt) {
       evt.target.classList.toggle('elements__like_active');
     });
@@ -69,48 +75,52 @@ const initialCards = [
 
 
 //открытие popup
-function popUpProfileOpen() {
-    popUpProfile.classList.add('popup_opened');
+function openPopup(popup) {
+  popup.classList.add('popup_opened');
+}
+
+function OpenPopUpProfile() {
+    openPopup(popUpProfile);
     nameInput.value = profileName.textContent;
     jobInput.value = profilejob.textContent;
 }
 
-function popUpImageOpen() {
-    popUpImage.classList.add('popup_opened');
+function OpenPopUpImage() {
+    openPopup(popUpImage);
     popupInputImageLink.value = '';
     popupInputImageName.value = '';
 }
 
 
 //закрытие popUp
-function popUpProfileClose() {
-    popUpProfile.classList.remove('popup_opened');
+
+function closePopup(popup) {
+  popup.classList.remove('popup_opened');
 }
 
-function popUpImageClose() {
-    popUpImage.classList.remove('popup_opened');
-}
+closeButtons.forEach((button) => {
+  // находим 1 раз ближайший к крестику попап 
+  const popup = button.closest('.popup');
+  // устанавливаем обработчик закрытия на крестик
+  button.addEventListener('click', () => closePopup(popup));
+});
 
-function popUpBigImageClose() {
-  popUpBigImage.classList.remove('popup_opened');
-}
+
 
 // Обработчик «отправки» формы, хотя пока
 // она никуда отправляться не будет
-function formSubmitHandler (evt) {
+function handleProfileFormSubmit (evt) {
     evt.preventDefault(); 
-    let nameInputValue = nameInput.value;
-    let jobInputValue = jobInput.value;
-    profileName.textContent = nameInputValue;
-    profilejob.textContent = jobInputValue;
-    popUpProfileClose()
+    profileName.textContent = nameInput.value;;
+    profilejob.textContent = jobInput.value;
+    closePopup(popUpProfile)
 }
 
-function formSubmitHandlerImage (evt) {
+function HandlerImageFormSubmit (evt) {
   evt.preventDefault(); 
-  let popupInputImageLinkValue = popupInputImageLink.value;
-  let popupInputImageNameValue = popupInputImageName.value;
-  let cardsElement = imageCard.querySelector('.elements__element').cloneNode(true);
+  const popupInputImageLinkValue = popupInputImageLink.value;
+  const popupInputImageNameValue = popupInputImageName.value;
+  const cardsElement = imageCard.querySelector('.elements__element').cloneNode(true);
   cardsElement.querySelector('.elements__like').addEventListener('click', function(evt) {
     evt.target.classList.toggle('elements__like_active');
   });
@@ -127,14 +137,11 @@ function formSubmitHandlerImage (evt) {
   cardsElement.querySelector('.elements__image').alt = popupInputImageNameValue;
   cardsElement.querySelector('.elements__text').textContent = popupInputImageNameValue;
   cardsList.prepend(cardsElement);
-  popUpImageClose()
+  closePopup(popUpImage)
 }
 
 //обработчики
-profileEditButton.addEventListener('click', popUpProfileOpen);
-imageEditButton.addEventListener('click', popUpImageOpen);
-popupProfileButtonClose.addEventListener('click', popUpProfileClose);
-poUpImageButtonClose.addEventListener('click', popUpImageClose);
-popUpBigImageBtnClose.addEventListener('click', popUpBigImageClose)
-formElement.addEventListener('submit', formSubmitHandler);
-formElementImage.addEventListener('submit', formSubmitHandlerImage);
+profileEditButton.addEventListener('click', OpenPopUpProfile);
+imageEditButton.addEventListener('click', OpenPopUpImage);
+formElement.addEventListener('submit', handleProfileFormSubmit);
+formElementImage.addEventListener('submit', HandlerImageFormSubmit);
