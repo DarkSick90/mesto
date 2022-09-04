@@ -57,7 +57,7 @@ function createCard(item) {
     evt.target.closest('.elements__element').remove();
   });
   cardsElement.querySelector('.elements__image').addEventListener('click', function(evt) {
-    popUpBigImage.classList.add('popup_opened');
+    openPopup(popUpBigImage);
     popIpBigImageImage.src = item.link;
     popUpBigImageDescription.alt = item.name;
     popUpBigImageDescription.textContent = item.name;
