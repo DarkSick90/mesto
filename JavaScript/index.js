@@ -4,6 +4,7 @@ const imageEditButton = document.querySelector('.profile__add-button');
 const popUpProfile = document.querySelector('.popup_window_profile');
 const popUpImage = document.querySelector('.popup_window_image');
 const closeButtons = document.querySelectorAll('.popup__btn-close');
+const popUpOverlay = Array.from(document.querySelectorAll('.popup'))
 const popupProfileButtonClose = document.querySelector('.popup__profile-btn-close');
 const poUpImageButtonClose = document.querySelector('.popup__image-btn-close');
 const popUpBigImageBtnClose = document.querySelector('.popup__big-image-btn-close')
@@ -78,6 +79,12 @@ initialCards.forEach((item) => {
 //открытие popup
 function openPopup(popup) {
   popup.classList.add('popup_opened');
+  document.addEventListener('keydown', (evt) => {
+    //Escape
+    if (evt.key === 'Escape') {
+      closePopup(popup)
+    }
+  })
 }
 
 function OpenPopUpProfile() {
@@ -105,6 +112,16 @@ closeButtons.forEach((button) => {
   // устанавливаем обработчик закрытия на крестик
   button.addEventListener('click', () => closePopup(popup));
 });
+
+popUpOverlay.forEach((overlay) => {
+  const overlayPopUp = overlay.closest('.popup');
+  overlayPopUp.addEventListener('click', (evt) => {
+    if (evt.target.classList.contains('popup')) {
+      closePopup(overlayPopUp)}
+    }
+  );
+  console.log(overlayPopUp);
+})
 
 
 

@@ -29,24 +29,28 @@
         <div class="popup__container">
           <button type="button" class="popup__btn-close popup__profile-btn-close" aria-label="Кнопка закрытия"><img class="popup__btn-close-img" src="images/Close-Icon.svg" alt="Кнопка закрытия"></button>
           <h2 class="popup__title">Редактировать профиль</h2>
-          <form class="popup__form popup__form-info" name="formInfo">
+          <form class="popup__form popup__form-info" name="formInfo" novalidate>
             <div>
-             <input class="popup__input popup__input_info_name" type="text" name="userName" value="Жак-Ив Кусто">
-             <input class="popup__input popup__input_info_job" type="text" name="userJob" value="Исследователь океана">
+             <input id="user-name" class="popup__input popup__input_info_name " type="text" name="userName" value="Жак-Ив Кусто" required minlength="2" maxlength="40">
+             <span id="user-name-error" class="popup__input-error"></span>
+             <input id="user-job" class="popup__input popup__input_info_job " type="text" name="userJob" value="Исследователь океана" required minlength="2" maxlength="200">
+             <span id="user-job-error" class="popup__input-error"></span>
             </div>
-            <input type="submit" value="Сохранить" class="popup__btn-save">
+            <input id="save-profile" type="submit" value="Сохранить" class="popup__button popup__btn-save popup__btn-save_disabled" disabled>
           </form>
         </div>
       </section><section class="popup popup_window_image">
         <div class="popup__container">
           <button type="button" class="popup__btn-close popup__image-btn-close" aria-label="Кнопка закрытия"><img class="popup__btn-close-img" src="images/Close-Icon.svg" alt="Кнопка закрытия"></button>
           <h2 class="popup__title">Новое место</h2>
-          <form class="popup__form popup__form-image" name="formImage">
+          <form class="popup__form popup__form-image" name="formImage" novalidate>
             <div>
-             <input class="popup__input popup__input_image_name" type="text" name="imageName" placeholder="Название">
-             <input class="popup__input popup__input_image_link" type="text" name="imageLink" placeholder="Ссылка на картинку">
+             <input id="card-name" class="popup__input popup__input_image_name " type="text" name="imageName" placeholder="Название" required minlength="2" maxlength="30">
+             <span id="card-name-error" class="popup__input-error"></span>
+             <input id="card-url" class="popup__input popup__input_image_link " type="url" name="imageLink" placeholder="Ссылка на картинку" required>
+             <span id="card-url-error" class="popup__input-error"></span>
             </div>
-            <input type="submit" value="Сохранить" class="popup__btn-save">
+            <input id="save-image" type="submit" value="Создать" class="popup__button popup__btn-save popup__btn-save_disabled" disabled>
           </form>
         </div>
       </section>
@@ -72,5 +76,6 @@
     </footer>
   </div>
   <script src="JavaScript/index.js"></script>
+  <script src="JavaScript/validate.js"></script>
  </body>
 </html>
