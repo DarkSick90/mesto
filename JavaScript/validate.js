@@ -10,21 +10,18 @@ const validationConfig = {
   inputCardUrl: "#card-url",
 };
 
-const forms = Array.from(document.querySelectorAll(validationConfig.formSelector));
-
-
-function hasInvalidInput(input, config, form) {
+function hasInvalidInput(config, form) {
   const formInputs = Array.from(form.querySelectorAll(config.inputSelector));
   const allInputsValidate = formInputs.some((input) => {
     return !input.validity.valid;
   });
-  return allInputsValidate
+  return allInputsValidate;
 }
 
 function toggleSubmitButtonState(input, config, form) {
   const submitButton = form.querySelector(config.submitButtonSelector);
-  const FormIsValid = hasInvalidInput(input, config, form);
-  if (FormIsValid) {
+  const hasFormErrors = hasInvalidInput(config, form);
+  if (hasFormErrors) {
     submitButton.classList.add(config.inactiveButtonClass);
     submitButton.disabled = true;
   } else {
@@ -35,7 +32,6 @@ function toggleSubmitButtonState(input, config, form) {
 
 function validateInput(input, config) {
   const error = document.querySelector(`#${input.id}-error`);
-  const form = input.closest(config.formSelector);
   if (!input.validity.valid) {
     input.classList.add(config.inputErrorClass);
     error.textContent = input.validationMessage;
@@ -55,8 +51,11 @@ function setHandlers(config, form) {
   });
 }
 
-function enableValidation(config, form) {
-  form.forEach((form) => {
+function enableValidation(config) {
+  const forms = Array.from(
+    document.querySelectorAll(validationConfig.formSelector)
+  );
+  forms.forEach((form) => {
     form.addEventListener("submit", (evt) => {
       evt.preventDefault();
     });
@@ -64,4 +63,4 @@ function enableValidation(config, form) {
   });
 }
 
-enableValidation(validationConfig, forms);
+enableValidation(validationConfig);

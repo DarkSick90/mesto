@@ -80,12 +80,12 @@ initialCards.forEach((cardData) => {
 });
 
 const handleEsc = (evt) => {
-  popUpOverlay.forEach(popup => {
-      if (evt.key === "Escape") {
-        closePopup(popup);
+  popUpOverlay.forEach((popup) => {
+    if (evt.key === "Escape") {
+      closePopup(popup);
     }
-  })
-}
+  });
+};
 
 //открытие popup
 function openPopup(popup) {
@@ -111,7 +111,7 @@ function openPopUpImage() {
 
 function closePopup(popup) {
   popup.classList.remove("popup_opened");
-  document.removeEventListener("keydown", handleEsc)
+  document.removeEventListener("keydown", handleEsc);
 }
 
 closeButtons.forEach((button) => {
