@@ -5,9 +5,6 @@ const popUpProfile = document.querySelector(".popup_window_profile");
 const popUpImage = document.querySelector(".popup_window_image");
 const closeButtons = document.querySelectorAll(".popup__btn-close");
 const popUpOverlay = Array.from(document.querySelectorAll(".popup"));
-const popupProfileButtonClose = document.querySelector(".popup__profile-btn-close");
-const poUpImageButtonClose = document.querySelector(".popup__image-btn-close");
-const popUpBigImageBtnClose = document.querySelector(".popup__big-image-btn-close");
 const imageCard = document.querySelector("#element").content;
 const cardsContainer = document.querySelector(".elements__list");
 const formInfo = document.querySelector(".popup__form-info");
@@ -22,7 +19,7 @@ const popUpBigImage = document.querySelector(".popup_window_big-image");
 const popIpBigImageImage = document.querySelector(".popup__big-image-image");
 const popUpBigImageDescription = document.querySelector(".popup__description");
 const buttonCardSubmit = popUpImage.querySelector("#save-image");
-cardElementTemplate = imageCard.querySelector(".elements__element");
+const cardElementTemplate = imageCard.querySelector(".elements__element");
 
 const initialCards = [
   {
@@ -82,16 +79,18 @@ initialCards.forEach((cardData) => {
   cardsContainer.prepend(cardsElement);
 });
 
+const handleEsc = (evt) => {
+  popUpOverlay.forEach(popup => {
+      if (evt.key === "Escape") {
+        closePopup(popup);
+    }
+  })
+}
+
 //открытие popup
 function openPopup(popup) {
   popup.classList.add("popup_opened");
-  function keydownEsc(evt) {
-    if (evt.key === "Escape") {
-      closePopup(popup);
-      document.removeEventListener("keydown", keydownEsc);
-    }
-  }
-  document.addEventListener("keydown", keydownEsc);
+  document.addEventListener("keydown", handleEsc);
 }
 
 function openPopUpProfile() {
@@ -112,6 +111,7 @@ function openPopUpImage() {
 
 function closePopup(popup) {
   popup.classList.remove("popup_opened");
+  document.removeEventListener("keydown", handleEsc)
 }
 
 closeButtons.forEach((button) => {
@@ -123,7 +123,7 @@ closeButtons.forEach((button) => {
 
 popUpOverlay.forEach((overlay) => {
   const overlayPopUp = overlay.closest(".popup");
-  overlayPopUp.addEventListener("click", (evt) => {
+  overlayPopUp.addEventListener("mousedown", (evt) => {
     if (evt.target.classList.contains("popup")) {
       closePopup(overlayPopUp);
     }
