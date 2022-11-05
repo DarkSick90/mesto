@@ -5,7 +5,6 @@ const popUpProfile = document.querySelector(".popup_window_profile");
 const popUpImage = document.querySelector(".popup_window_image");
 const closeButtons = document.querySelectorAll(".popup__btn-close");
 const popUpOverlay = Array.from(document.querySelectorAll(".popup"));
-const imageCard = document.querySelector("#element").content;
 const cardsContainer = document.querySelector(".elements__list");
 const formInfo = document.querySelector(".popup__form-info");
 const formImage = document.querySelector(".popup__form-image");
@@ -15,69 +14,15 @@ const popupInputImageName = formImage.querySelector(".popup__input_image_name");
 const popupInputImageLink = formImage.querySelector(".popup__input_image_link");
 const profileName = document.querySelector(".profile__name");
 const profileJob = document.querySelector(".profile__name-info");
-const popUpBigImage = document.querySelector(".popup_window_big-image");
-const popIpBigImageImage = document.querySelector(".popup__big-image-image");
-const popUpBigImageDescription = document.querySelector(".popup__description");
 const buttonCardSubmit = popUpImage.querySelector("#save-image");
-const cardElementTemplate = imageCard.querySelector(".elements__element");
 
-const initialCards = [
-  {
-    name: "Архыз",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
-  },
-  {
-    name: "Челябинская область",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg",
-  },
-  {
-    name: "Иваново",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg",
-  },
-  {
-    name: "Камчатка",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg",
-  },
-  {
-    name: "Холмогорский район",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg",
-  },
-  {
-    name: "Байкал",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
-  },
-];
 
-function createCard(cardData) {
-  const cardsElement = cardElementTemplate.cloneNode(true);
-  cardsElement
-    .querySelector(".elements__like")
-    .addEventListener("click", function (evt) {
-      evt.target.classList.toggle("elements__like_active");
-    });
-  cardsElement
-    .querySelector(".elements__delete")
-    .addEventListener("click", function (evt) {
-      evt.target.closest(".elements__element").remove();
-    });
-  cardsElement
-    .querySelector(".elements__image")
-    .addEventListener("click", function (evt) {
-      openPopup(popUpBigImage);
-      popIpBigImageImage.src = cardData.link;
-      popUpBigImageDescription.alt = cardData.name;
-      popUpBigImageDescription.textContent = cardData.name;
-    });
-  cardsElement.querySelector(".elements__image").src = cardData.link;
-  cardsElement.querySelector(".elements__image").alt = cardData.name;
-  cardsElement.querySelector(".elements__text").textContent = cardData.name;
-  return cardsElement;
-}
+import {initialCards ,Card } from "./Card.js";
+import { validationConfig, FormValidator } from "./validate.js";
 
-initialCards.forEach((cardData) => {
-  const cardsElement = createCard(cardData);
-  cardsContainer.prepend(cardsElement);
-});
+
+const createItem = new Card(initialCards);
+createItem.render(cardsContainer)
 
 const handleEsc = (evt) => {
   popUpOverlay.forEach((popup) => {
@@ -87,8 +32,9 @@ const handleEsc = (evt) => {
   });
 };
 
+
 //открытие popup
-function openPopup(popup) {
+export function openPopup(popup) {
   popup.classList.add("popup_opened");
   document.addEventListener("keydown", handleEsc);
 }
@@ -145,10 +91,13 @@ function handleCardFormSubmit(evt) {
     name: popupInputImageName.value,
     link: popupInputImageLink.value,
   };
-  const cardsElement = createCard(newCard);
-  cardsContainer.prepend(cardsElement);
+  const cardsElement = new Card(newCard);
+  cardsElement.createCardNew(newCard)
   closePopup(popUpImage);
 }
+
+const validation = new FormValidator(validationConfig);
+validation.enableValidation(validationConfig);
 
 //обработчики
 profileEditButton.addEventListener("click", openPopUpProfile);

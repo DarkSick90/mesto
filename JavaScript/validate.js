@@ -1,4 +1,4 @@
-const validationConfig = {
+export const validationConfig = {
   formSelector: ".popup__form",
   inputSelector: ".popup__input",
   submitButtonSelector: ".popup__button",
@@ -10,57 +10,61 @@ const validationConfig = {
   inputCardUrl: "#card-url",
 };
 
-function hasInvalidInput(config, form) {
-  const formInputs = Array.from(form.querySelectorAll(config.inputSelector));
+export class FormValidator{
+  constructor(validationConfig){
+    this.validationConfig = validationConfig;
+  }
+
+ #hasInvalidInput(validationConfig, form) {
+  const formInputs = Array.from(form.querySelectorAll(this.validationConfig.inputSelector));
   const allInputsValidate = formInputs.some((input) => {
     return !input.validity.valid;
   });
   return allInputsValidate;
 }
 
-function toggleSubmitButtonState(input, config, form) {
-  const submitButton = form.querySelector(config.submitButtonSelector);
-  const hasFormErrors = hasInvalidInput(config, form);
+ #toggleSubmitButtonState(input, validationConfig, form) {
+  const submitButton = form.querySelector(this.validationConfig.submitButtonSelector);
+  const hasFormErrors = this.#hasInvalidInput(this.validationConfig, form);
   if (hasFormErrors) {
-    submitButton.classList.add(config.inactiveButtonClass);
+    submitButton.classList.add(this.validationConfig.inactiveButtonClass);
     submitButton.disabled = true;
   } else {
-    submitButton.classList.remove(config.inactiveButtonClass);
+    submitButton.classList.remove(this.validationConfig.inactiveButtonClass);
     submitButton.disabled = false;
   }
 }
 
-function validateInput(input, config) {
+ #validateInput(input, validationConfig) {
   const error = document.querySelector(`#${input.id}-error`);
   if (!input.validity.valid) {
-    input.classList.add(config.inputErrorClass);
+    input.classList.add(this.validationConfig.inputErrorClass);
     error.textContent = input.validationMessage;
   } else {
-    input.classList.remove(config.inputErrorClass);
+    input.classList.remove(this.validationConfig.inputErrorClass);
     error.textContent = "";
   }
 }
 
-function setHandlers(config, form) {
-  const inputs = Array.from(form.querySelectorAll(config.inputSelector));
+   #setHandlers(validationConfig, form) {
+  const inputs = Array.from(form.querySelectorAll(this.validationConfig.inputSelector));
   inputs.forEach((input) => {
     input.addEventListener("input", () => {
-      validateInput(input, config);
-      toggleSubmitButtonState(input, config, form);
+      this.#validateInput(input, validationConfig);
+      this.#toggleSubmitButtonState(input, this.validationConfig, form);
     });
   });
 }
 
-function enableValidation(config) {
-  const forms = Array.from(
-    document.querySelectorAll(validationConfig.formSelector)
-  );
-  forms.forEach((form) => {
+  enableValidation(validationConfig) {
+    const forms = Array.from(
+          document.querySelectorAll(this.validationConfig.formSelector)
+        ); 
+          forms.forEach((form) => {
     form.addEventListener("submit", (evt) => {
       evt.preventDefault();
     });
-    setHandlers(config, form);
+    this.#setHandlers(this.validationConfig, form);
   });
+  }
 }
-
-enableValidation(validationConfig);
