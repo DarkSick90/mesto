@@ -4,46 +4,17 @@ const popUpBigImage = document.querySelector(".popup_window_big-image");
 const popIpBigImageImage = document.querySelector(".popup__big-image-image");
 const popUpBigImageDescription = document.querySelector(".popup__description");
 
-import { openPopup } from "./index.js";
+import {handleEsc, openPopup, closePopup} from "./utils/utils.js"
 
-export const initialCards = [
-    {
-      name: "Архыз",
-      link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
-    },
-    {
-      name: "Челябинская область",
-      link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg",
-    },
-    {
-      name: "Иваново",
-      link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg",
-    },
-    {
-      name: "Камчатка",
-      link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg",
-    },
-    {
-      name: "Холмогорский район",
-      link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg",
-    },
-    {
-      name: "Байкал",
-      link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
-    },
-  ];
-  
-  
   export class Card {
   
     static cardElementTemplate = imageCard.querySelector(".elements__element");
   
-  
-  #initialCards
+  #cardData
   #cardElementTemplate
   
-    constructor(initialCards) {
-      this.#initialCards = initialCards;
+    constructor(cardData) {
+      this.#cardData = cardData;
     }
   
   
@@ -63,38 +34,26 @@ export const initialCards = [
           });
     }
   
-    #handleOpenImage(initialCards){
+    #handleOpenImage(){
       this.#cardElementTemplate
       .querySelector(".elements__image")
       .addEventListener("click", function (evt) {
         openPopup(popUpBigImage);
-        popIpBigImageImage.src = initialCards.link;
-        popUpBigImageDescription.alt = initialCards.name;
-        popUpBigImageDescription.textContent = initialCards.name;
+        popIpBigImageImage.src = this.#cardData.link;
+        popUpBigImageDescription.alt = this.#cardData.name;
+        popUpBigImageDescription.textContent = this.#cardData.name;
       });
     }
   
-  
-    #createCard(initialCards) {
+    createCard() {
       this.#cardElementTemplate = this.constructor.cardElementTemplate.cloneNode(true);
       this.#handleLike();
       this.#handleDelete();
-      this.#handleOpenImage(initialCards)
-        this.#cardElementTemplate.querySelector(".elements__image").src = initialCards.link;
-        this.#cardElementTemplate.querySelector(".elements__image").alt = initialCards.name;
-        this.#cardElementTemplate.querySelector(".elements__text").textContent = initialCards.name;
+      this.#handleOpenImage()
+        this.#cardElementTemplate.querySelector(".elements__image").src = this.#cardData.link;
+        this.#cardElementTemplate.querySelector(".elements__image").alt = this.#cardData.name;
+        this.#cardElementTemplate.querySelector(".elements__text").textContent = this.#cardData.name;
         return this.#cardElementTemplate
-    }
-  
-    render(initialCards) {
-      this.#initialCards.forEach((initialCards) => {
-  
-        cardsContainer.prepend(this.#createCard(initialCards));
-      });
-    }
-  
-    createCardNew(initialCards){
-      cardsContainer.prepend(this.#createCard(initialCards));
     }
   }
   

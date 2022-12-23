@@ -1,18 +1,9 @@
-export const validationConfig = {
-  formSelector: ".popup__form",
-  inputSelector: ".popup__input",
-  submitButtonSelector: ".popup__button",
-  inactiveButtonClass: "popup__btn-save_disabled",
-  inputErrorClass: "popup__input_type_error",
-  errorClass: "popup__error_visible",
-  buttonCardSubmit: "#save-image",
-  inputCardName: "#card-name",
-  inputCardUrl: "#card-url",
-};
+import {validationConfig} from "./utils/constants.js"
 
 export class FormValidator{
-  constructor(validationConfig){
+  constructor(validationConfig, formSelector){
     this.validationConfig = validationConfig;
+    this.formSelector = formSelector;
   }
 
  #hasInvalidInput(validationConfig, form) {
@@ -56,15 +47,10 @@ export class FormValidator{
   });
 }
 
-  enableValidation(validationConfig) {
-    const forms = Array.from(
-          document.querySelectorAll(this.validationConfig.formSelector)
-        ); 
-          forms.forEach((form) => {
-    form.addEventListener("submit", (evt) => {
+  enableValidation() {
+    this.formSelector.addEventListener("submit", (evt) => {
       evt.preventDefault();
     });
-    this.#setHandlers(this.validationConfig, form);
-  });
+    this.#setHandlers(this.validationConfig, this.formSelector);
   }
 }

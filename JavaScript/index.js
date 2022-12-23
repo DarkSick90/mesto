@@ -1,4 +1,3 @@
-//переменные
 const profileEditButton = document.querySelector(".profile__edit-button");
 const buttonOpenAddCardPopup = document.querySelector(".profile__add-button");
 const popUpProfile = document.querySelector(".popup_window_profile");
@@ -16,28 +15,19 @@ const profileName = document.querySelector(".profile__name");
 const profileJob = document.querySelector(".profile__name-info");
 const buttonCardSubmit = popUpImage.querySelector("#save-image");
 
-
-import {initialCards ,Card } from "./Card.js";
-import { validationConfig, FormValidator } from "./validate.js";
+import {initialCards, validationConfig} from "./utils/constants.js"
+import {Card} from "./Card.js";
+import {FormValidator } from "./FormValidator.js";
+import {handleEsc, openPopup, closePopup} from "./utils/utils.js"
 
 
 const createItem = new Card(initialCards);
-createItem.render(cardsContainer)
+initialCards.forEach(() => {
+  
+  cardsContainer.prepend(createItem.createCard());
+});
 
-const handleEsc = (evt) => {
-  popUpOverlay.forEach((popup) => {
-    if (evt.key === "Escape") {
-      closePopup(popup);
-    }
-  });
-};
-
-
-//открытие popup
-export function openPopup(popup) {
-  popup.classList.add("popup_opened");
-  document.addEventListener("keydown", handleEsc);
-}
+console.log(initialCards)
 
 function openPopUpProfile() {
   openPopup(popUpProfile);
@@ -53,12 +43,7 @@ function openPopUpImage() {
   buttonCardSubmit.classList.add("popup__btn-save_disabled");
 }
 
-//закрытие popUp
 
-function closePopup(popup) {
-  popup.classList.remove("popup_opened");
-  document.removeEventListener("keydown", handleEsc);
-}
 
 closeButtons.forEach((button) => {
   // находим 1 раз ближайший к крестику попап
@@ -92,12 +77,15 @@ function handleCardFormSubmit(evt) {
     link: popupInputImageLink.value,
   };
   const cardsElement = new Card(newCard);
-  cardsElement.createCardNew(newCard)
+  cardsContainer.prepend(cardsElement.createCard())
   closePopup(popUpImage);
 }
 
-const validation = new FormValidator(validationConfig);
-validation.enableValidation(validationConfig);
+const validationInfo = new FormValidator(validationConfig, formInfo);
+validationInfo.enableValidation();
+
+const validationImage = new FormValidator(validationConfig, formImage);
+validationImage.enableValidation();
 
 //обработчики
 profileEditButton.addEventListener("click", openPopUpProfile);
