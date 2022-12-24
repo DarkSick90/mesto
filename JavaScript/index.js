@@ -15,19 +15,15 @@ const profileName = document.querySelector(".profile__name");
 const profileJob = document.querySelector(".profile__name-info");
 const buttonCardSubmit = popUpImage.querySelector("#save-image");
 
-import {initialCards, validationConfig} from "./utils/constants.js"
-import {Card} from "./Card.js";
-import {FormValidator } from "./FormValidator.js";
-import {handleEsc, openPopup, closePopup} from "./utils/utils.js"
+import { initialCards, validationConfig } from "./utils/constants.js";
+import { Card } from "./Card.js";
+import { FormValidator } from "./FormValidator.js";
+import { handleEsc, openPopup, closePopup } from "./utils/utils.js";
 
-
-const createItem = new Card(initialCards);
-initialCards.forEach(() => {
-  
+initialCards.forEach(function (item) {
+  const createItem = new Card(item);
   cardsContainer.prepend(createItem.createCard());
 });
-
-console.log(initialCards)
 
 function openPopUpProfile() {
   openPopup(popUpProfile);
@@ -42,8 +38,6 @@ function openPopUpImage() {
   buttonCardSubmit.disabled = true;
   buttonCardSubmit.classList.add("popup__btn-save_disabled");
 }
-
-
 
 closeButtons.forEach((button) => {
   // находим 1 раз ближайший к крестику попап
@@ -77,7 +71,7 @@ function handleCardFormSubmit(evt) {
     link: popupInputImageLink.value,
   };
   const cardsElement = new Card(newCard);
-  cardsContainer.prepend(cardsElement.createCard())
+  cardsContainer.prepend(cardsElement.createCard());
   closePopup(popUpImage);
 }
 
