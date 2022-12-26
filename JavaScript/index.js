@@ -3,7 +3,7 @@ const buttonOpenAddCardPopup = document.querySelector(".profile__add-button");
 const popUpProfile = document.querySelector(".popup_window_profile");
 const popUpImage = document.querySelector(".popup_window_image");
 const closeButtons = document.querySelectorAll(".popup__btn-close");
-const popUpOverlay = Array.from(document.querySelectorAll(".popup"));
+const popUpOverlays = Array.from(document.querySelectorAll(".popup"));
 const cardsContainer = document.querySelector(".elements__list");
 const formInfo = document.querySelector(".popup__form-info");
 const formImage = document.querySelector(".popup__form-image");
@@ -14,14 +14,21 @@ const popupInputImageLink = formImage.querySelector(".popup__input_image_link");
 const profileName = document.querySelector(".profile__name");
 const profileJob = document.querySelector(".profile__name-info");
 const buttonCardSubmit = popUpImage.querySelector("#save-image");
+const imageCard = document.querySelector("#element").content;
+const cardElementTemplate = imageCard.querySelector(".elements__element");
 
 import { initialCards, validationConfig } from "./utils/constants.js";
 import { Card } from "./Card.js";
 import { FormValidator } from "./FormValidator.js";
 import { handleEsc, openPopup, closePopup } from "./utils/utils.js";
 
+function createCard(item) {
+  const createItem = new Card(item, cardElementTemplate);
+  return createItem;
+}
+
 initialCards.forEach(function (item) {
-  const createItem = new Card(item);
+  const createItem = createCard(item);
   cardsContainer.prepend(createItem.createCard());
 });
 
@@ -33,10 +40,6 @@ function openPopUpProfile() {
 
 function openPopUpImage() {
   openPopup(popUpImage);
-  popupInputImageLink.value = "";
-  popupInputImageName.value = "";
-  buttonCardSubmit.disabled = true;
-  buttonCardSubmit.classList.add("popup__btn-save_disabled");
 }
 
 closeButtons.forEach((button) => {
@@ -46,7 +49,7 @@ closeButtons.forEach((button) => {
   button.addEventListener("click", () => closePopup(popup));
 });
 
-popUpOverlay.forEach((overlay) => {
+popUpOverlays.forEach((overlay) => {
   const overlayPopUp = overlay.closest(".popup");
   overlayPopUp.addEventListener("mousedown", (evt) => {
     if (evt.target.classList.contains("popup")) {
@@ -70,9 +73,11 @@ function handleCardFormSubmit(evt) {
     name: popupInputImageName.value,
     link: popupInputImageLink.value,
   };
-  const cardsElement = new Card(newCard);
+  const cardsElement = createCard(newCard);
   cardsContainer.prepend(cardsElement.createCard());
   closePopup(popUpImage);
+  formImage.reset();
+  validationImage.disabledButton();
 }
 
 const validationInfo = new FormValidator(validationConfig, formInfo);
