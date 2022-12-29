@@ -7,6 +7,7 @@ import { handleEsc, openPopup, closePopup } from "./utils/utils.js";
 export class Card {
   #cardData;
   #cardElementTemplate;
+  #cardElement
 
   constructor(cardData, cardElementTemplate) {
     this.#cardData = cardData;
@@ -14,7 +15,7 @@ export class Card {
   }
 
   #handleLike() {
-    this.#cardElementTemplate
+    this.#cardElement
       .querySelector(".elements__like")
       .addEventListener("click", function (evt) {
         evt.target.classList.toggle("elements__like_active");
@@ -22,7 +23,7 @@ export class Card {
   }
 
   #handleDelete() {
-    this.#cardElementTemplate
+    this.#cardElement
       .querySelector(".elements__delete")
       .addEventListener("click", function (evt) {
         evt.target.closest(".elements__element").remove();
@@ -30,7 +31,7 @@ export class Card {
   }
 
   #handleOpenImage(cardData) {
-    this.#cardElementTemplate
+    this.#cardElement
       .querySelector(".elements__image")
       .addEventListener("click", function (evt) {
         openPopup(popUpBigImage);
@@ -47,14 +48,14 @@ export class Card {
   }
 
   createCard() {
-    this.#cardElementTemplate = this.#cardElementTemplate.cloneNode(true);
+    this.#cardElement = this.#cardElementTemplate.cloneNode(true);
     this.#setEventListeners();
     const cardImage =
-      this.#cardElementTemplate.querySelector(".elements__image");
+      this.#cardElement.querySelector(".elements__image");
     cardImage.src = this.#cardData.link;
     cardImage.alt = this.#cardData.name;
-    this.#cardElementTemplate.querySelector(".elements__text").textContent =
+    this.#cardElement.querySelector(".elements__text").textContent =
       this.#cardData.name;
-    return this.#cardElementTemplate;
+    return this.#cardElement;
   }
 }

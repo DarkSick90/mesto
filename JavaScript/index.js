@@ -24,12 +24,11 @@ import { handleEsc, openPopup, closePopup } from "./utils/utils.js";
 
 function createCard(item) {
   const createItem = new Card(item, cardElementTemplate);
-  return createItem;
+  return createItem.createCard();;
 }
 
 initialCards.forEach(function (item) {
-  const createItem = createCard(item);
-  cardsContainer.prepend(createItem.createCard());
+  cardsContainer.prepend(createCard(item));
 });
 
 function openPopUpProfile() {
@@ -73,8 +72,7 @@ function handleCardFormSubmit(evt) {
     name: popupInputImageName.value,
     link: popupInputImageLink.value,
   };
-  const cardsElement = createCard(newCard);
-  cardsContainer.prepend(cardsElement.createCard());
+  cardsContainer.prepend(createCard(newCard));
   closePopup(popUpImage);
   formImage.reset();
   validationImage.disabledButton();

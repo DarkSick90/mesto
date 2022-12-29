@@ -1,37 +1,29 @@
-const popUpImage = document.querySelector(".popup_window_image");
-const buttonCardSubmit = popUpImage.querySelector("#save-image");
 
 import { validationConfig } from "./utils/constants.js";
 
 export class FormValidator {
-  constructor(validationConfig, forms) {
+  constructor(validationConfig, form) {
     this.validationConfig = validationConfig;
-    this.forms = forms;
+    this.form = form;
     this.formInputs = Array.from(
-      this.forms.querySelectorAll(this.validationConfig.inputSelector)
+      this.form.querySelectorAll(this.validationConfig.inputSelector)
     );
-    this.submitButton = this.forms.querySelector(
+    this.submitButton = this.form.querySelector(
       this.validationConfig.submitButtonSelector
-    );
-    this.inputs = Array.from(
-      this.forms.querySelectorAll(this.validationConfig.inputSelector)
     );
   }
 
-  #hasInvalidInput(validationConfig, form) {
+  #hasInvalidInput() {
     const allInputsValidate = this.formInputs.some((input) => {
       return !input.validity.valid;
     });
     return allInputsValidate;
   }
 
-  #toggleSubmitButtonState(input, validationConfig, form) {
+  #toggleSubmitButtonState(form) {
     const hasFormErrors = this.#hasInvalidInput(this.validationConfig, form);
     if (hasFormErrors) {
-      this.submitButton.classList.add(
-        this.validationConfig.inactiveButtonClass
-      );
-      this.submitButton.disabled = true;
+      this.disabledButton()
     } else {
       this.submitButton.classList.remove(
         this.validationConfig.inactiveButtonClass
@@ -40,7 +32,7 @@ export class FormValidator {
     }
   }
 
-  #validateInput(input, validationConfig) {
+  #validateInput(input) {
     const error = document.querySelector(`#${input.id}-error`);
     if (!input.validity.valid) {
       input.classList.add(this.validationConfig.inputErrorClass);
@@ -51,22 +43,24 @@ export class FormValidator {
     }
   }
 
-  #setHandlers(validationConfig, form) {
-    this.inputs.forEach((input) => {
+  #setHandlers() {
+    this.formInputs.forEach((input) => {
       input.addEventListener("input", () => {
         this.#validateInput(input, validationConfig);
-        this.#toggleSubmitButtonState(input, this.validationConfig, form);
+        this.#toggleSubmitButtonState(input, this.validationConfig);
       });
     });
   }
 
   disabledButton() {
-    buttonCardSubmit.disabled = true;
-    buttonCardSubmit.classList.add("popup__btn-save_disabled");
+    this.submitButton.disabled = true;
+    this.submitButton.classList.add(
+      this.validationConfig.inactiveButtonClass
+    );
   }
 
   enableValidation() {
-    this.forms.addEventListener("submit", (evt) => {
+    this.form.addEventListener("submit", (evt) => {
       evt.preventDefault();
     });
     this.#setHandlers();
