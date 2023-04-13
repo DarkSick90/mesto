@@ -2,16 +2,16 @@ const popUpBigImage = document.querySelector(".popup_window_big-image");
 const popIpBigImageImage = document.querySelector(".popup__big-image-image");
 const popUpBigImageDescription = document.querySelector(".popup__description");
 
-import { handleEsc, openPopup, closePopup } from "./utils/utils.js";
-
 export class Card {
   #cardData;
   #cardElementTemplate;
-  #cardElement
+  #cardElement;
+  #handleCardClick;
 
-  constructor(cardData, cardElementTemplate) {
+  constructor(cardData, cardElementTemplate, handleCardClick) {
     this.#cardData = cardData;
     this.#cardElementTemplate = cardElementTemplate;
+    this.#handleCardClick = handleCardClick;
   }
 
   #handleLike() {
@@ -30,28 +30,20 @@ export class Card {
       });
   }
 
-  #handleOpenImage(cardData) {
-    this.#cardElement
-      .querySelector(".elements__image")
-      .addEventListener("click", function (evt) {
-        openPopup(popUpBigImage);
-        popIpBigImageImage.src = cardData.link;
-        popUpBigImageDescription.alt = cardData.name;
-        popUpBigImageDescription.textContent = cardData.name;
-      });
-  }
-
   #setEventListeners() {
     this.#handleLike();
     this.#handleDelete();
-    this.#handleOpenImage(this.#cardData);
+    this.#cardElement
+      .querySelector(".elements__image")
+      .addEventListener("click", () => {
+        this.#handleCardClick.openPopUp(this.#cardData);
+      });
   }
 
   createCard() {
     this.#cardElement = this.#cardElementTemplate.cloneNode(true);
     this.#setEventListeners();
-    const cardImage =
-      this.#cardElement.querySelector(".elements__image");
+    const cardImage = this.#cardElement.querySelector(".elements__image");
     cardImage.src = this.#cardData.link;
     cardImage.alt = this.#cardData.name;
     this.#cardElement.querySelector(".elements__text").textContent =
