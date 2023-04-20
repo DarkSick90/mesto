@@ -1,19 +1,22 @@
 import { PopUp } from "./PopUp.js";
-import { handleEsc, openPopup, closePopup } from "./utils/utils.js";
 
-const popIpBigImageImage = document.querySelector(".popup__big-image-image");
-const popUpBigImageDescription = document.querySelector(".popup__description");
 
 export class PopupWithImage extends PopUp {
   constructor(popUpSelector) {
     super(popUpSelector);
+    this.popIpBigImageImage = document.querySelector(".popup__big-image-image");
+    this.popUpBigImageDescription = document.querySelector(".popup__description");
   }
 
   openPopUp(cardData) {
-    popIpBigImageImage.src = cardData.link;
-    popUpBigImageDescription.alt = cardData.name;
-    popUpBigImageDescription.textContent = cardData.name;
+    this.popIpBigImageImage.src = cardData.link;
+    this.popUpBigImageDescription.alt = cardData.name;
+    this.popUpBigImageDescription.textContent = cardData.name;
     super.open();
+  }
+
+  setEventListeners() {
     super.setEventListeners();
   }
+
 }

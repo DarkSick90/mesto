@@ -1,21 +1,20 @@
-const popUpOverlay = Array.from(document.querySelectorAll(".popup"));
-const closeButtons = document.querySelectorAll(".popup__btn-close");
 
 export class PopUp {
-  #popUpSelector;
-
+  #popUp;
+  
   constructor(popUpSelector) {
-    this.#popUpSelector = document.querySelector(popUpSelector);
+    this.#popUp = document.querySelector(popUpSelector);
+    this._handleEscClose = this.#handleEscClose.bind(this);
   }
 
   open() {
-    this.#popUpSelector.classList.add("popup_opened");
-    document.addEventListener("keydown", this.#handleEscClose.bind(this));
+    this.#popUp.classList.add("popup_opened");
+    document.addEventListener("keydown", this._handleEscClose);
   }
 
   close() {
-    this.#popUpSelector.classList.remove("popup_opened");
-    document.removeEventListener("keydown", this.#handleEscClose.bind(this));
+    this.#popUp.classList.remove("popup_opened");
+    document.removeEventListener("keydown", this._handleEscClose);
   }
 
   #handleEscClose(evt) {
@@ -25,13 +24,13 @@ export class PopUp {
   }
 
   setEventListeners() {
-    this.#popUpSelector
+    this.#popUp
       .querySelector(".popup__btn-close")
       .addEventListener("click", () => {
         this.close();
       });
 
-    this.#popUpSelector.addEventListener("click", (evt) => {
+    this.#popUp.addEventListener("click", (evt) => {
       if (evt.target.classList.contains("popup")) {
         this.close();
       }

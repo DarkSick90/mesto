@@ -1,6 +1,3 @@
-const popUpBigImage = document.querySelector(".popup_window_big-image");
-const popIpBigImageImage = document.querySelector(".popup__big-image-image");
-const popUpBigImageDescription = document.querySelector(".popup__description");
 
 export class Card {
   #cardData;
@@ -14,30 +11,42 @@ export class Card {
     this.#handleCardClick = handleCardClick;
   }
 
+  #toggleLike(evt){
+    evt.target.classList.toggle("elements__like_active");
+} 
+
   #handleLike() {
     this.#cardElement
       .querySelector(".elements__like")
-      .addEventListener("click", function (evt) {
-        evt.target.classList.toggle("elements__like_active");
+      .addEventListener("click", (evt) => {
+        this.#toggleLike(evt);
       });
   }
+
+  #deleteCard(evt){
+    evt.target.closest(".elements__element").remove();
+} 
 
   #handleDelete() {
     this.#cardElement
       .querySelector(".elements__delete")
-      .addEventListener("click", function (evt) {
-        evt.target.closest(".elements__element").remove();
+      .addEventListener("click", (evt) => {
+        this.#deleteCard(evt);
+      });
+  }
+
+  #handleImageClick() {
+    this.#cardElement
+      .querySelector(".elements__image")
+      .addEventListener("click", () => {
+        this.#handleCardClick();
       });
   }
 
   #setEventListeners() {
     this.#handleLike();
     this.#handleDelete();
-    this.#cardElement
-      .querySelector(".elements__image")
-      .addEventListener("click", () => {
-        this.#handleCardClick.openPopUp(this.#cardData);
-      });
+    this.#handleImageClick()
   }
 
   createCard() {

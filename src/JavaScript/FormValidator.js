@@ -1,6 +1,4 @@
 
-import { validationConfig } from "./utils/constants.js";
-
 export class FormValidator {
   constructor(validationConfig, form) {
     this.validationConfig = validationConfig;
@@ -46,7 +44,7 @@ export class FormValidator {
   #setHandlers() {
     this.formInputs.forEach((input) => {
       input.addEventListener("input", () => {
-        this.#validateInput(input, validationConfig);
+        this.#validateInput(input, this.validationConfig);
         this.#toggleSubmitButtonState(input, this.validationConfig);
       });
     });

@@ -16,29 +16,32 @@ import { Card } from "./Card.js";
 import { FormValidator } from "./FormValidator.js";
 import { UserInfo } from "./UserInfo.js";
 import { Section } from "./Section.js";
-import { PopUp } from "./PopUp.js";
 import { PopupWithImage } from "./PopupWithImage";
 import { PopupWithForm } from "./PopupWithForm";
 
 const handleCardClick = new PopupWithImage(".popup_window_big-image");
 
 function createCard(item) {
-  const newSection = new Section(
-    {
-      items: item,
-      renderer: (item) => {
-        const createItem = new Card(item, cardElementTemplate, handleCardClick);
-        return createItem.createCard();
-      },
-    },
-    ".elements__list"
-  );
-  newSection.renderItems();
+  const createItem = new Card(item, cardElementTemplate, () => {handleCardClick.openPopUp(item);
+    handleCardClick.setEventListeners()});
+  return createItem.createCard();
 }
 
-createCard(initialCards);
+const newSection = new Section(
+  {
+    items: initialCards,
+    renderer: (item) => {
+      const card = createCard(item);
+      return card;
+    },
+  },
+  ".elements__list"
+);
+
+newSection.renderItems();
 
 const userInfo = new UserInfo(".profile__name", ".profile__name-info");
+const userImage = new UserInfo(".popup__input_image_name", ".popup__input_image_link");
 
 const openPopUpInfo = new PopupWithForm(".popup_window_profile", (data) => {
   userInfo.setUserInfo(data);
@@ -46,24 +49,24 @@ const openPopUpInfo = new PopupWithForm(".popup_window_profile", (data) => {
 openPopUpInfo.setEventListeners();
 
 function openPopUpProfile() {
-  nameInput.value = profileName.textContent;
-  jobInput.value = profileJob.textContent;
+  const infoObject = userInfo.getUserInfo();
+  nameInput.value = infoObject.name;
+  jobInput.value = infoObject.info;
   openPopUpInfo.open();
 }
 
 const openPopUpPicture = new PopupWithForm(".popup_window_image", () => {
-  const newCard = {
-    name: popupInputImageName.value,
-    link: popupInputImageLink.value,
-  };
-  createCard([newCard]);
-  validationImage.disabledButton();
+  const newCard = openPopUpPicture._getInputValues();
+  const card = createCard(newCard);
+  newSection.addItem(card);
 });
+
 
 openPopUpPicture.setEventListeners();
 
 function openPopUpImage() {
   openPopUpPicture.open();
+  validationImage.disabledButton();
 }
 
 const validationInfo = new FormValidator(validationConfig, formInfo);
