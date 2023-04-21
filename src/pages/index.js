@@ -4,26 +4,25 @@ const formInfo = document.querySelector(".popup__form-info");
 const formImage = document.querySelector(".popup__form-image");
 const nameInput = formInfo.querySelector(".popup__input_info_name");
 const jobInput = formInfo.querySelector(".popup__input_info_job");
-const popupInputImageName = formImage.querySelector(".popup__input_image_name");
-const popupInputImageLink = formImage.querySelector(".popup__input_image_link");
-const profileName = document.querySelector(".profile__name");
-const profileJob = document.querySelector(".profile__name-info");
 const imageCard = document.querySelector("#element").content;
 const cardElementTemplate = imageCard.querySelector(".elements__element");
 
-import { initialCards, validationConfig } from "./utils/constants.js";
-import { Card } from "./Card.js";
-import { FormValidator } from "./FormValidator.js";
-import { UserInfo } from "./UserInfo.js";
-import { Section } from "./Section.js";
-import { PopupWithImage } from "./PopupWithImage";
-import { PopupWithForm } from "./PopupWithForm";
+import './index.css';
+import { initialCards, validationConfig } from "../JavaScript/utils/constants.js";
+import { Card } from "../JavaScript/components/Card.js";
+import { FormValidator } from "../JavaScript/components/FormValidator.js";
+import { UserInfo } from "../JavaScript/components/UserInfo.js";
+import { Section } from "../JavaScript/components/Section.js";
+import { PopupWithImage } from "../JavaScript/components/PopupWithImage";
+import { PopupWithForm } from "../JavaScript/components/PopupWithForm";
 
 const handleCardClick = new PopupWithImage(".popup_window_big-image");
+handleCardClick.setEventListeners()
 
 function createCard(item) {
-  const createItem = new Card(item, cardElementTemplate, () => {handleCardClick.openPopUp(item);
-    handleCardClick.setEventListeners()});
+  const createItem = new Card(item, cardElementTemplate, () => {
+    handleCardClick.openPopUp(item);
+    });
   return createItem.createCard();
 }
 
@@ -41,7 +40,6 @@ const newSection = new Section(
 newSection.renderItems();
 
 const userInfo = new UserInfo(".profile__name", ".profile__name-info");
-const userImage = new UserInfo(".popup__input_image_name", ".popup__input_image_link");
 
 const openPopUpInfo = new PopupWithForm(".popup_window_profile", (data) => {
   userInfo.setUserInfo(data);
@@ -56,7 +54,7 @@ function openPopUpProfile() {
 }
 
 const openPopUpPicture = new PopupWithForm(".popup_window_image", () => {
-  const newCard = openPopUpPicture._getInputValues();
+  const newCard = openPopUpPicture.getInputValues();
   const card = createCard(newCard);
   newSection.addItem(card);
 });
