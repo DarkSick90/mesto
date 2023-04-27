@@ -1,11 +1,12 @@
 import { PopUp } from "./Popup.js";
 
-
 export class PopupWithImage extends PopUp {
   constructor(popUpSelector) {
     super(popUpSelector);
     this.popIpBigImageImage = document.querySelector(".popup__big-image-image");
-    this.popUpBigImageDescription = document.querySelector(".popup__description");
+    this.popUpBigImageDescription = document.querySelector(
+      ".popup__description"
+    );
   }
 
   openPopUp(cardData) {
@@ -18,5 +19,4 @@ export class PopupWithImage extends PopUp {
   setEventListeners() {
     super.setEventListeners();
   }
-
 }

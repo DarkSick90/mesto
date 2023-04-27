@@ -10,7 +10,7 @@ export class Section {
   }
 
   renderItems() {
-    this.#items.forEach((item) => {
+    this.#items.reverse().forEach((item) => {
       const element = this.#renderer(item);
       this.addItem(element);
     });

@@ -13,10 +13,13 @@
     <main class="main">
       <section class="profile" aria-label="Проиль пользователя">
         <img class="profile__avatar" src="<%=require('./images/avatar.jpg')%>" alt="Аватар">
+        <div class="profile__avatar-edit-container">
+          <img class="profile__avatar-edit" src="<%=require('./images/Avatar-edit.png')%>" alt="">
+        </div>
         <div class="profile__info">
-          <h1 class="profile__name">Жак-Ив Кусто</h1>
+          <h1 class="profile__name"></h1>
           <button type="button" class="profile__edit-button" aria-label="Кнопка редактиования профиля"><img class="profile__edit-button-img" src="<%=require('./images/Edit-Button.svg')%>" alt="Кнопка редактиования профиля"></button>
-          <p class="profile__name-info">Исследователь океана</p>
+          <p class="profile__name-info"></p>
         </div>
         <button type="button" class="profile__add-button" aria-label="Кнопка добавления картинок"><img src="<%=require('./images/Add-Button.svg')%>" alt="Кнопка добавления картинок"></button>
       </section>
@@ -30,9 +33,9 @@
           <h2 class="popup__title">Редактировать профиль</h2>
           <form class="popup__form popup__form-info" name="formInfo" novalidate>
             <div>
-             <input id="user-name" class="popup__input popup__input_info_name " type="text" name="userName" value="Жак-Ив Кусто" required minlength="2" maxlength="40">
+             <input id="user-name" class="popup__input popup__input_info_name " type="text" name="name" value="Жак-Ив Кусто" required minlength="2" maxlength="40">
              <span id="user-name-error" class="popup__input-error"></span>
-             <input id="user-job" class="popup__input popup__input_info_job " type="text" name="userJob" value="Исследователь океана" required minlength="2" maxlength="200">
+             <input id="user-job" class="popup__input popup__input_info_job " type="text" name="about" value="Исследователь океана" required minlength="2" maxlength="200">
              <span id="user-job-error" class="popup__input-error"></span>
             </div>
             <input id="save-profile" type="submit" value="Сохранить" class="popup__button popup__btn-save popup__btn-save_disabled" disabled>
@@ -53,6 +56,28 @@
           </form>
         </div>
       </section>
+    </section><section class="popup popup__window_avatar">
+      <div class="popup__container">
+        <button type="button" class="popup__btn-close popup__image-btn-close" aria-label="Кнопка закрытия"><img class="popup__btn-close-img" src="<%=require('./images/Close-Icon.svg')%>" alt="Кнопка закрытия"></button>
+        <h2 class="popup__title">Обновить аватар</h2>
+        <form class="popup__form popup__form-image" name="formAvatar" novalidate>
+          <div>
+           <input id="avatar-url" class="popup__input popup__input_image_link " type="url" name="avatar" placeholder="Ссылка на картинку" required>
+           <span id="avatar-url-error" class="popup__input-error"></span>
+          </div>
+          <input id="save-image" type="submit" value="Создать" class="popup__button popup__btn-save popup__btn-save_disabled" disabled>
+        </form>
+      </div>
+    </section>
+    <section class="popup popup__card_delete">
+      <div class="popup__container">
+        <button type="button" class="popup__btn-close popup__image-btn-close" aria-label="Кнопка закрытия"><img class="popup__btn-close-img" src="<%=require('./images/Close-Icon.svg')%>" alt="Кнопка закрытия"></button>
+        <h2 class="popup__title">Вы уверены?</h2>
+        <form class="popup__form popup__form-delete" name="formDelet" novalidate>
+          <input id="save-image" type="submit" value="Да" class="popup__button popup__btn-save popup__deletesubmit">
+        </form>
+      </div>
+    </section>
       <section class="popup popup_window_big-image">
         <div class="popup__container popup__container_image">
         <button type="button" class="popup__btn-close popup__big-image-btn-close" aria-label="Кнопка закрытия"><img class="popup__btn-close-img" src="<%=require('./images/Close-Icon.svg')%>" alt="Кнопка закрытия"></button>
@@ -62,10 +87,13 @@
       <template id="element">
         <li class="elements__element">
           <button type="button" class="elements__delete" aria-label="кнопка удаления"></button>
-          <img class="elements__image" src="#" alt="">
+          <img class="elements__image" src="#" alt="" id="">
           <div class="elements__info">
             <h2 class="elements__text"></h2>
+            <div class="elements__like-container">
             <button type="button" class="elements__like" aria-label="Значок сердечка"></button>
+            <p class="elements__like-counte">1</p>
+          </div>
           </div>
         </li>
       </template>

@@ -36,3 +36,4 @@ export const validationConfig = {
   inputCardName: "#card-name",
   inputCardUrl: "#card-url",
 };
+0

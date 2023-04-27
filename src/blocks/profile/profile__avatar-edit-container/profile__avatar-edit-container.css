@@ -1,0 +1,13 @@
+.profile__avatar-edit-container {
+    position: relative;
+    margin-right: -120px;
+    height: 120px;
+    width: 120px;
+  left: -120px;
+    display: block;
+}
+
+.profile__avatar-edit-container:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
