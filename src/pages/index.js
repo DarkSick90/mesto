@@ -3,7 +3,7 @@ const buttonOpenAddCardPopup = document.querySelector(".profile__add-button");
 const avatarEditButton = document.querySelector(".profile__avatar-edit");
 const formInfo = document.querySelector(".popup__form-info");
 const formImage = document.querySelector(".popup__form-image");
-const formAvatar = document.querySelector(".popup__window_avatar");
+const formAvatar = document.querySelector(".popup_window_avatar");
 const nameInput = formInfo.querySelector(".popup__input_info_name");
 const jobInput = formInfo.querySelector(".popup__input_info_job");
 const imageCard = document.querySelector("#element").content;
@@ -112,12 +112,12 @@ const openPopUpPicture = new PopupWithForm(".popup_window_image", () => {
   apiCardsPost.postCards(newCard);
 });
 
-const openPopUAvatar = new PopupWithForm(".popup__window_avatar", () => {
+const openPopUAvatar = new PopupWithForm(".popup_window_avatar", () => {
   const newCard = openPopUAvatar.getInputValues();
   apiUserAvatarPost.postUserAvatar(newCard);
 });
 
-const openPopUDelete = new PopupWithForm(".popup__card_delete", (item) => {
+const openPopUDelete = new PopupWithForm(".popup_card_delete", (item) => {
   apiDeleteCard.deleteCard(item);
 });
 
