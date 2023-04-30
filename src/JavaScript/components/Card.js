@@ -3,7 +3,6 @@ export class Card {
   #cardElementTemplate;
   #cardElement;
   #handleCardClick;
-  #deleteCardFromServer;
   #openPopUpDelete;
   #form;
   #putLike;
@@ -13,7 +12,6 @@ export class Card {
     cardData,
     cardElementTemplate,
     handleCardClick,
-    deleteCardFromServer,
     openPopUpDelete,
     putLike,
     deleteLike
@@ -21,19 +19,17 @@ export class Card {
     this.#cardData = cardData;
     this.#cardElementTemplate = cardElementTemplate;
     this.#handleCardClick = handleCardClick;
-    this.#deleteCardFromServer = deleteCardFromServer;
     this.#openPopUpDelete = openPopUpDelete;
-    this.#form = document.querySelector(".popup__form-delete");
     this.#putLike = putLike;
     this.#deleteLike = deleteLike;
   }
 
   #toggleLike(evt) {
-    evt.target.classList.toggle("elements__like_active");
-    if (evt.target.classList.contains("elements__like_active")) {
-      this.#putLike();
+    /* evt.target.classList.toggle("elements__like_active"); */
+    if (!evt.target.classList.contains("elements__like_active")) {
+      this.#putLike(evt);
     } else {
-      this.#deleteLike();
+      this.#deleteLike(evt);
     }
   }
 
@@ -45,21 +41,13 @@ export class Card {
       });
   }
 
-  #handleDelete(item) {
+  #handleDelete(item, userId) {
     this.#cardElement
       .querySelector(".elements__delete")
       .addEventListener("click", (evt) => {
-        const id = evt.target
-          .closest(".elements__element")
-          .querySelector(".elements__image").id;
-        this.#form.addEventListener("submit", (evt) => {
-          evt.preventDefault();
-          this.#deleteCardFromServer(id);
-          this.#form.querySelector(".popup__btn-save").value = "Сохранение...";
-        });
         this.#openPopUpDelete(evt);
       });
-    if (item.owner._id == "d74d89b6b7e8b71fc709cb64") {
+    if (item.owner._id == userId) {
       this.#cardElement
         .querySelector(".elements__delete")
         .classList.add("popup_opened");
@@ -74,15 +62,15 @@ export class Card {
       });
   }
 
-  #setEventListeners(item) {
+  #setEventListeners(item, userId) {
     this.#handleLike();
-    this.#handleDelete(item);
+    this.#handleDelete(item, userId);
     this.#handleImageClick();
   }
 
-  createCard(item) {
+  createCard(item, userId) {
     this.#cardElement = this.#cardElementTemplate.cloneNode(true);
-    this.#setEventListeners(item);
+    this.#setEventListeners(item, userId);
     const cardImage = this.#cardElement.querySelector(".elements__image");
     cardImage.src = this.#cardData.link;
     cardImage.alt = this.#cardData.name;

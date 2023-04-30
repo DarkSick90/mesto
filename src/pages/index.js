@@ -21,71 +21,10 @@ import { UserInfo } from "../JavaScript/components/UserInfo.js";
 import { Section } from "../JavaScript/components/Section.js";
 import { PopupWithImage } from "../JavaScript/components/PopupWithImage";
 import { PopupWithForm } from "../JavaScript/components/PopupWithForm";
+import { PopupWithConfirmation } from "../JavaScript/components/PopupWithConfirmation";
 
-const apiCards = new Api({
-  url: "https://mesto.nomoreparties.co/v1/cohort-64/cards",
-  headers: {
-    authorization: "f1dcddbe-9f41-4d4b-a5fb-88f41f215a01",
-    "Content-Type": "application/json",
-  },
-});
-
-const apiCardsPost = new Api({
-  url: "https://mesto.nomoreparties.co/v1/cohort-64/cards",
-  method: "POST",
-  headers: {
-    authorization: "f1dcddbe-9f41-4d4b-a5fb-88f41f215a01",
-    "Content-Type": "application/json",
-  },
-});
-
-const apiUser = new Api({
-  url: "https://mesto.nomoreparties.co/v1/cohort-64/users/me",
-  headers: {
-    authorization: "f1dcddbe-9f41-4d4b-a5fb-88f41f215a01",
-    "Content-Type": "application/json",
-  },
-});
-
-const apiUserPost = new Api({
-  url: "https://mesto.nomoreparties.co/v1/cohort-64/users/me",
-  method: "PATCH",
-  headers: {
-    authorization: "f1dcddbe-9f41-4d4b-a5fb-88f41f215a01",
-    "Content-Type": "application/json",
-  },
-});
-
-const apiUserAvatarPost = new Api({
-  url: "https://mesto.nomoreparties.co/v1/cohort-64/users/me/avatar",
-  method: "PATCH",
-  headers: {
-    authorization: "f1dcddbe-9f41-4d4b-a5fb-88f41f215a01",
-    "Content-Type": "application/json",
-  },
-});
-
-const apiDeleteCard = new Api({
-  url: "https://mesto.nomoreparties.co/v1/cohort-64/cards",
-  method: "DELETE",
-  headers: {
-    authorization: "f1dcddbe-9f41-4d4b-a5fb-88f41f215a01",
-    "Content-Type": "application/json",
-  },
-});
-
-const apiPutLike = new Api({
-  url: "https://mesto.nomoreparties.co/v1/cohort-64/cards",
-  method: "PUT",
-  headers: {
-    authorization: "f1dcddbe-9f41-4d4b-a5fb-88f41f215a01",
-    "Content-Type": "application/json",
-  },
-});
-
-const apiDeleteLike = new Api({
-  url: "https://mesto.nomoreparties.co/v1/cohort-64/cards",
-  method: "DELETE",
+const api = new Api({
+  url: "https://mesto.nomoreparties.co/v1/cohort-64",
   headers: {
     authorization: "f1dcddbe-9f41-4d4b-a5fb-88f41f215a01",
     "Content-Type": "application/json",
@@ -100,92 +39,148 @@ const userInfo = new UserInfo(
   ".profile__avatar"
 );
 
-const openPopUpInfo = new PopupWithForm(".popup_window_profile", (data) => {
-  apiUserPost.postUser(data);
-  apiUser.getInitialCards().then((data) => {
-    userInfo.setUserInfo(data);
-  });
-});
+const popUpInfoOpen = new PopupWithForm(
+  ".popup_window_profile",
+  (data, form) => {
+    api.postUser(data, "PATCH").then(() => {
+      api.getUserInfo().then((data) => {
+        userInfo.setUserInfo(data);
+        popUpInfoOpen.close();
+        form.reset();
+      });
+    });
+  }
+);
 
-const openPopUpPicture = new PopupWithForm(".popup_window_image", () => {
-  const newCard = openPopUpPicture.getInputValues();
-  apiCardsPost.postCards(newCard);
-});
+const popUpPictureOpen = new PopupWithForm(
+  ".popup_window_image",
+  (data, form) => {
+    api
+      .postCards(data, "POST")
+      .then(() => {
+        api.getInitialCards().then((data) => {
+          const cards = data;
+          api.getUserInfo().then((userId) => {
+            newSection.renderItems([cards[0]], userId._id);
+          });
+        });
+      })
+      .then(() => {
+        popUpPictureOpen.close();
+        form.reset();
+      });
+  }
+);
 
-const openPopUAvatar = new PopupWithForm(".popup_window_avatar", () => {
-  const newCard = openPopUAvatar.getInputValues();
-  apiUserAvatarPost.postUserAvatar(newCard);
-});
+const PopUAvatarOpen = new PopupWithForm(
+  ".popup_window_avatar",
+  (data, form) => {
+    api.postUserAvatar(data, "PATCH").then(() => {
+      api.getUserInfo().then((data) => {
+        userInfo.setUserInfo(data);
+        PopUAvatarOpen.close();
+        form.reset();
+      });
+    });
+  }
+);
 
-const openPopUDelete = new PopupWithForm(".popup_card_delete", (item) => {
-  apiDeleteCard.deleteCard(item);
-});
+const popUDeleteOpen = new PopupWithConfirmation(
+  ".popup_card_delete",
+  (item, evt) => {
+    api.deleteCard(item, "DELETE").then(() => {
+      popUDeleteOpen.closeDelete();
+      evt.target.closest(".elements__element").remove();
+    });
+  }
+);
 
 handleCardClick.setEventListeners();
 
-openPopUAvatar.setEventListeners();
+PopUAvatarOpen.setEventListeners();
 
-openPopUDelete.setEventListeners();
+popUDeleteOpen.setEventListenersDelet();
 
-function createCard(item) {
+function createCard(item, userId) {
   const createItem = new Card(
     item,
     cardElementTemplate,
     () => {
       handleCardClick.openPopUp(item);
     },
-    (item) => {
-      apiDeleteCard.deleteCard(item);
+    (id) => {
+      popUDeleteOpen.openDelete(id);
     },
-    () => {
-      openPopUDelete.open();
+    (evt) => {
+      api.like(item._id, "PUT").then(() => {
+        evt.target.classList.toggle("elements__like_active");
+        api.getInitialCards(item, "GET").then((data) =>
+          data.forEach((elem) => {
+            if (elem._id == item._id) {
+              evt.target
+                .closest(".elements__element")
+                .querySelector(".elements__like-counte").textContent =
+                elem.likes.length;
+            }
+          })
+        );
+      });
     },
-    () => {
-      apiPutLike.like(item._id);
-    },
-    () => {
-      apiDeleteLike.like(item._id);
+    (evt) => {
+      api.like(item._id, "DELETE").then(() => {
+        evt.target.classList.toggle("elements__like_active");
+        api.getInitialCards(item, "GET").then((data) =>
+          data.forEach((elem) => {
+            if (elem._id == item._id) {
+              evt.target
+                .closest(".elements__element")
+                .querySelector(".elements__like-counte").textContent =
+                elem.likes.length;
+            }
+          })
+        );
+      });
     }
   );
-  if (item.owner._id == "d74d89b6b7e8b71fc709cb64") {
-  }
-  return createItem.createCard(item);
+
+  return createItem.createCard(item, userId);
 }
 
-apiCards.getInitialCards().then((data) => {
-  const cards = data;
-  const newSection = new Section(
-    {
-      items: cards,
-      renderer: (item) => {
-        const card = createCard(item);
-        return card;
-      },
+const newSection = new Section(
+  {
+    renderer: (item, id) => {
+      const card = createCard(item, id);
+      return card;
     },
-    ".elements__list"
-  );
-  newSection.renderItems();
+  },
+  ".elements__list"
+);
+
+api.getInitialCards().then((data) => {
+  const cards = data;
+  api.getUserInfo().then((userId) => {
+    newSection.renderItems(cards, userId._id);
+  });
 });
 
-openPopUpInfo.setEventListeners();
+popUpInfoOpen.setEventListeners();
 
 function openPopUpProfile() {
-  apiUser.getInitialCards().then((data) => {});
   const infoObject = userInfo.getUserInfo();
   nameInput.value = infoObject.name;
   jobInput.value = infoObject.info;
-  openPopUpInfo.open();
+  popUpInfoOpen.open();
 }
 
-openPopUpPicture.setEventListeners();
+popUpPictureOpen.setEventListeners();
 
 function openPopUpImage() {
-  openPopUpPicture.open();
+  popUpPictureOpen.open();
   validationImage.disabledButton();
 }
 
 function openPopUpAvatarEdit() {
-  openPopUAvatar.open();
+  PopUAvatarOpen.open();
   validationImage.disabledButton();
 }
 
@@ -202,12 +197,12 @@ profileEditButton.addEventListener("click", openPopUpProfile);
 buttonOpenAddCardPopup.addEventListener("click", openPopUpImage);
 avatarEditButton.addEventListener("click", openPopUpAvatarEdit);
 
-fetch("https://mesto.nomoreparties.co/v1/cohort-64/users/me ", {
-  headers: {
-    authorization: "f1dcddbe-9f41-4d4b-a5fb-88f41f215a01",
-  },
-})
-  .then((res) => res.json())
-  .then((result) => {
-    userInfo.setUserInfo(result);
+api.getUserInfo().then((data) => {
+  userInfo.setUserInfo(data);
+});
+
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+  .then(([info, initialCards]) => {})
+  .catch((err) => {
+    console.log(err);
   });

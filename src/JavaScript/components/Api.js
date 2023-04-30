@@ -2,11 +2,10 @@ export class Api {
   constructor(config) {
     this.url = config.url;
     this.headers = config.headers;
-    this.method = config.method;
   }
 
   getInitialCards() {
-    return fetch(this.url, {
+    return fetch(`${this.url}/cards`, {
       headers: this.headers,
     }).then((res) => {
       if (res.ok) {
@@ -16,61 +15,87 @@ export class Api {
     });
   }
 
-  postCards(data) {
-    fetch(this.url, {
-      method: this.method,
+  postCards(data, method) {
+    return fetch(`${this.url}/cards`, {
+      method: method,
       headers: this.headers,
       body: JSON.stringify({
         name: data.name,
         link: data.link,
       }),
-    }).then((data) => {
-      location.reload();
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject("Error");
     });
   }
 
-  postUser(data) {
-    fetch(this.url, {
-      method: this.method,
+  postUser(data, method) {
+    return fetch(`${this.url}/users/me`, {
+      method: method,
       headers: this.headers,
       body: JSON.stringify({
         name: data.name,
         about: data.about,
       }),
-    }).then((data) => {
-      location.reload();
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject("Error");
     });
   }
 
-  postUserAvatar(data) {
-    fetch(this.url, {
-      method: this.method,
+  getUserInfo(data) {
+    return fetch(`${this.url}/users/me`, {
+      headers: this.headers,
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject("Error");
+    });
+  }
+
+  postUserAvatar(data, method) {
+    return fetch(`${this.url}/users/me/avatar`, {
+      method: method,
       headers: this.headers,
       body: JSON.stringify({
         avatar: data.avatar,
       }),
-    }).then((data) => {
-      location.reload();
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject("Error");
     });
   }
 
-  deleteCard(id) {
-    fetch(`${this.url}/${id}`, {
-      method: this.method,
+  deleteCard(id, method) {
+    return fetch(`${this.url}/cards/${id}`, {
+      method: method,
       headers: this.headers,
       body: JSON.stringify({}),
-    }).then((data) => {
-      location.reload();
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject("Error");
     });
   }
 
-  like(id) {
-    fetch(`${this.url}/${id}/likes`, {
-      method: this.method,
+  like(id, method) {
+    return fetch(`${this.url}/cards/${id}/likes`, {
+      method: method,
       headers: this.headers,
       body: JSON.stringify({}),
-    }).then((data) => {
-      location.reload();
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject("Error");
     });
   }
 }
