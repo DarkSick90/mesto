@@ -29,35 +29,16 @@ export class PopupWithForm extends PopUp {
     super.setEventListeners();
     this.#form.addEventListener("submit", (evt) => {
       evt.preventDefault();
-      this.#submitHandler(this.#getInputValues(), this.#form);
+      this.#submitHandler(this.#getInputValues());
       this.#form.querySelector(".popup__btn-save").value = "Сохранение...";
     });
   }
 
-  openDelete(evt) {
-    super.open();
-    this.evt = evt;
-    this.id = evt.target
-      .closest(".elements__element")
-      .querySelector(".elements__image").id;
+  reset() {
+    this.#form.reset();
   }
 
-  setEventListenersDelet() {
-    super.setEventListeners();
-    this.#form.addEventListener("submit", (evt) => {
-      evt.preventDefault();
-      this.#submitHandler(this.id, this.evt);
-      this.#form.querySelector(".popup__btn-save").value = "Удаление...";
-    });
-  }
-
-  close() {
-    super.close();
-    this.#form.querySelector(".popup__btn-save").value = "Создать";
-  }
-
-  closeDelete() {
-    super.close();
-    this.#form.querySelector(".popup__btn-save").value = "Да";
+  returnText(text) {
+    this.#form.querySelector(".popup__btn-save").value = text;
   }
 }

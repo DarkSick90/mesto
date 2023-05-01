@@ -4,86 +4,63 @@ export class Api {
     this.headers = config.headers;
   }
 
+  #getResponseData(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка: ${res.status}`);
+  }
+
   getInitialCards() {
     return fetch(`${this.url}/cards`, {
       headers: this.headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Error");
-    });
+    }).then((res) => this.#getResponseData(res));
   }
 
-  postCards(data, method) {
+  postCards(data) {
     return fetch(`${this.url}/cards`, {
-      method: method,
+      method: "POST",
       headers: this.headers,
       body: JSON.stringify({
         name: data.name,
         link: data.link,
       }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Error");
-    });
+    }).then((res) => this.#getResponseData(res));
   }
 
-  postUser(data, method) {
+  postUser(data) {
     return fetch(`${this.url}/users/me`, {
-      method: method,
+      method: "PATCH",
       headers: this.headers,
       body: JSON.stringify({
         name: data.name,
         about: data.about,
       }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Error");
-    });
+    }).then((res) => this.#getResponseData(res));
   }
 
-  getUserInfo(data) {
+  getUserInfo() {
     return fetch(`${this.url}/users/me`, {
       headers: this.headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Error");
-    });
+    }).then((res) => this.#getResponseData(res));
   }
 
-  postUserAvatar(data, method) {
+  postUserAvatar(data) {
     return fetch(`${this.url}/users/me/avatar`, {
-      method: method,
+      method: "PATCH",
       headers: this.headers,
       body: JSON.stringify({
         avatar: data.avatar,
       }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Error");
-    });
+    }).then((res) => this.#getResponseData(res));
   }
 
-  deleteCard(id, method) {
+  deleteCard(id) {
     return fetch(`${this.url}/cards/${id}`, {
-      method: method,
+      method: "DELETE",
       headers: this.headers,
       body: JSON.stringify({}),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Error");
-    });
+    }).then((res) => this.#getResponseData(res));
   }
 
   like(id, method) {
@@ -91,11 +68,6 @@ export class Api {
       method: method,
       headers: this.headers,
       body: JSON.stringify({}),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Error");
-    });
+    }).then((res) => this.#getResponseData(res));
   }
 }

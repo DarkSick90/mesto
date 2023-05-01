@@ -10,7 +10,7 @@ export class PopupWithConfirmation extends PopUp {
     this.#submitHandler = submitHandler;
   }
 
-  openDelete(evt) {
+  open(evt) {
     super.open();
     this.evt = evt;
     this.id = evt.target
@@ -18,7 +18,7 @@ export class PopupWithConfirmation extends PopUp {
       .querySelector(".elements__image").id;
   }
 
-  setEventListenersDelet() {
+  setEventListeners() {
     super.setEventListeners();
     this.#form.addEventListener("submit", (evt) => {
       evt.preventDefault();
@@ -27,7 +27,7 @@ export class PopupWithConfirmation extends PopUp {
     });
   }
 
-  closeDelete() {
+  close() {
     super.close();
     this.#form.querySelector(".popup__btn-save").value = "Да";
   }
