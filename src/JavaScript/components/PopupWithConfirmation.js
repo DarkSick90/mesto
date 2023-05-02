@@ -10,9 +10,10 @@ export class PopupWithConfirmation extends PopUp {
     this.#submitHandler = submitHandler;
   }
 
-  open(evt) {
+  open(evt, item) {
     super.open();
     this.evt = evt;
+    this.item = item;
     this.id = evt.target
       .closest(".elements__element")
       .querySelector(".elements__image").id;
@@ -22,13 +23,16 @@ export class PopupWithConfirmation extends PopUp {
     super.setEventListeners();
     this.#form.addEventListener("submit", (evt) => {
       evt.preventDefault();
-      this.#submitHandler(this.id, this.evt);
+      this.#submitHandler(this.id, this.item);
       this.#form.querySelector(".popup__btn-save").value = "Удаление...";
     });
   }
 
   close() {
     super.close();
-    this.#form.querySelector(".popup__btn-save").value = "Да";
+  }
+
+  returnText(text) {
+    this.#form.querySelector(".popup__btn-save").value = text;
   }
 }

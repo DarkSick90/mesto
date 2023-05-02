@@ -4,7 +4,6 @@ export class Card {
   #cardElement;
   #handleCardClick;
   #openPopUpDelete;
-  #form;
   #putLike;
   #deleteLike;
   #userId;
@@ -35,14 +34,16 @@ export class Card {
     }
   }
 
-  toggleLike(evt) {
-    evt.target.classList.toggle("elements__like_active");
+  toggleLike() {
+    this.#cardElement
+      .querySelector(".elements__like")
+      .classList.toggle("elements__like_active");
   }
 
-  setLikeCounte(evt, elem) {
-    evt.target
-      .closest(".elements__element")
-      .querySelector(".elements__like-counte").textContent = elem.likes.length;
+  setLikeCounte(data) {
+    this.data = data;
+    this.#cardElement.querySelector(".elements__like-counte").textContent =
+      this.data.likes.length;
   }
 
   #handleLike() {
@@ -66,8 +67,8 @@ export class Card {
     }
   }
 
-  deletCard(evt) {
-    evt.target.closest(".elements__element").remove();
+  deletCard() {
+    this.#cardElement.remove();
   }
 
   #handleImageClick() {

@@ -63,9 +63,17 @@ export class Api {
     }).then((res) => this.#getResponseData(res));
   }
 
-  like(id, method) {
+  likePut(id) {
     return fetch(`${this.url}/cards/${id}/likes`, {
-      method: method,
+      method: "PUT",
+      headers: this.headers,
+      body: JSON.stringify({}),
+    }).then((res) => this.#getResponseData(res));
+  }
+
+  likeDelete(id) {
+    return fetch(`${this.url}/cards/${id}/likes`, {
+      method: "DELETE",
       headers: this.headers,
       body: JSON.stringify({}),
     }).then((res) => this.#getResponseData(res));

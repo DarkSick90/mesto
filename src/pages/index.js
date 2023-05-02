@@ -32,7 +32,6 @@ const api = new Api({
 });
 
 const handleCardClick = new PopupWithImage(".popup_window_big-image");
-const card = new Card();
 
 const userInfo = new UserInfo(
   ".profile__name",
@@ -46,7 +45,7 @@ const popUpInfoOpen = new PopupWithForm(".popup_window_profile", (data) => {
     .then((data) => {
       userInfo.setUserInfo(data);
       popUpInfoOpen.close();
-      popUpInfoOpen.reset();
+      popUpInfoOpen.resetForm();
     })
     .catch((err) => {
       console.log(err);
@@ -64,7 +63,7 @@ const popUpPictureOpen = new PopupWithForm(".popup_window_image", (data) => {
       api.getUserInfo().then((userId) => {
         newSection.renderItems([cards], userId._id);
         popUpPictureOpen.close();
-        popUpPictureOpen.reset();
+        popUpPictureOpen.resetForm();
       });
     })
     .catch((err) => {
@@ -77,11 +76,11 @@ const popUpPictureOpen = new PopupWithForm(".popup_window_image", (data) => {
 
 const popUAvatarOpen = new PopupWithForm(".popup_window_avatar", (data) => {
   api
-    .postUserAvatar(data, "PATCH")
+    .postUserAvatar(data)
     .then((data) => {
       userInfo.setUserInfo(data);
       popUAvatarOpen.close();
-      popUAvatarOpen.reset();
+      popUAvatarOpen.resetForm();
     })
     .catch((err) => {
       console.log(err);
@@ -93,17 +92,18 @@ const popUAvatarOpen = new PopupWithForm(".popup_window_avatar", (data) => {
 
 const popUDeleteOpen = new PopupWithConfirmation(
   ".popup_card_delete",
-  (item, evt) => {
+  (item, card) => {
     api
-      .deleteCard(item, "DELETE")
+      .deleteCard(item)
       .then(() => {
-        card.deletCard(evt);
+        card.deletCard();
+        popUDeleteOpen.close();
       })
       .catch((err) => {
         console.log(err);
       })
       .finally(() => {
-        popUDeleteOpen.close();
+        popUDeleteOpen.returnText("Да");
       });
   }
 );
@@ -123,19 +123,29 @@ function createCard(item, userId) {
       handleCardClick.openPopUp(item);
     },
     (id) => {
-      popUDeleteOpen.open(id);
+      popUDeleteOpen.open(id, createItem);
     },
     (evt) => {
-      api.like(item._id, "PUT").then((data) => {
-        card.toggleLike(evt);
-        card.setLikeCounte(evt, data);
-      });
+      api
+        .likePut(item._id)
+        .then((data) => {
+          createItem.toggleLike(evt);
+          createItem.setLikeCounte(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     (evt) => {
-      api.like(item._id, "DELETE").then((data) => {
-        card.toggleLike(evt);
-        card.setLikeCounte(evt, data);
-      });
+      api
+        .likeDelete(item._id)
+        .then((data) => {
+          createItem.toggleLike(evt);
+          createItem.setLikeCounte(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   );
 

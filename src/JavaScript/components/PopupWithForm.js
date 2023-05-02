@@ -34,7 +34,7 @@ export class PopupWithForm extends PopUp {
     });
   }
 
-  reset() {
+  resetForm() {
     this.#form.reset();
   }
 
