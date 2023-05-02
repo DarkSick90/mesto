@@ -4,9 +4,9 @@
 .header{border-bottom:1px solid rgba(84,84,84,.7);display:flex;flex:0 0 auto;margin:0 auto;max-width:880px;padding:45px 0 41px;width:100%}@media screen and (max-width:600px){.header{margin:0;padding:28px 0 31px}}
 .header__logo{width:142px}@media screen and (max-width:600px){.header__logo{margin-left:27px;width:103px}}
 .main{flex:1 0 auto;margin:0 auto;max-width:880px;width:100%}
-.profile{align-items:center;display:flex;flex-wrap:wrap;justify-content:center;margin-top:40px}@media screen and (max-width:910px){.profile{flex-direction:column}}
+.profile{align-items:center;display:flex;flex-wrap:wrap;justify-content:center;margin-top:40px;position:relative}@media screen and (max-width:910px){.profile{flex-direction:column}}
 .profile__avatar{border-radius:50%;height:120px;-o-object-fit:cover;object-fit:cover;position:relative;width:120px}.profile__avatar:hover:before{background-color:#000;content:"";height:100%;left:0;opacity:.8;top:0;width:100%}
-.profile__avatar-edit-container{display:block;height:120px;left:-120px;margin-right:-120px;position:relative;width:120px}.profile__avatar-edit-container:hover{background-color:rgba(0,0,0,.8)}
+.profile__avatar-edit-container{display:block;height:120px;left:0;position:absolute;width:120px;z-index:2}.profile__avatar-edit-container:hover{background-color:rgba(0,0,0,.8)}@media screen and (max-width:910px){.profile__avatar-edit-container{left:50%;top:60px;transform:translate(-50%,-50%)}}
 .profile__avatar-edit{background:none;border:none;cursor:pointer;left:50%;opacity:0;padding:47px;position:relative;top:50%;transform:translate(-50%,-50%);transition:.4s}.profile__avatar-edit:hover{cursor:pointer;opacity:1}
 .profile__info{display:grid;grid-template-columns:max-content 24px;margin-left:30px;max-width:550px}@media screen and (max-width:910px){.profile__info{justify-content:center;margin:36px auto 0;padding-left:28px;text-align:center}}
 .profile__name{font-size:42px;font-weight:500;margin:0;max-width:500px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}@media screen and (max-width:600px){.profile__name{font-size:27px;max-width:220px}}
